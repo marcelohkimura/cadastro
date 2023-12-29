@@ -1,0 +1,273 @@
+{
+	"info": {
+		"_postman_id": "6c18b7aa-30fa-4e51-a1af-340f16e93955",
+		"name": "KeepSimple",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6047636"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\": \"marcelohkimura@gmail.com\",\r\n\"password\": \"123456\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta CEP",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJjZWxvaGtpbXVyYUBnbWFpbC5jb20iLCJleHAiOjE5MTk4NzAzODJ9.4LmBpbv11OLXgYvATwDc1XQ6Fhs5OVAHTrTeNPWUgEI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cep\": \"04216001\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/cep",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cep"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar CEP",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJjZWxvaGtpbXVyYUBnbWFpbC5jb20iLCJleHAiOjE5MTk4NjMzNDR9.10SgML6irdg17gPjFoD-xj2_cMQPf0hZMz2eI30rNEI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cep\": \"04216002\",\r\n\"bairro\": \"Ipiranga\",\r\n\"rua\": \"rua\",\r\n\"cidade\": \"São Paulo\",\r\n\"uf\": \"SP\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/cep",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cep"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar Usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJjZWxvaGtpbXVyYUBnbWFpbC5jb20iLCJleHAiOjE5MTk4NjMzNDR9.10SgML6irdg17gPjFoD-xj2_cMQPf0hZMz2eI30rNEI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cpf\": \"11111111112\",\r\n\"nome\": \"Marcelo Kimura\",\r\n\"nascimento\": \"03/02/1977\",\r\n\"cep\": \"04216002\",\r\n\"numero\": 879,\r\n\"complemento\": \"complemento\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alterar Usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJjZWxvaGtpbXVyYUBnbWFpbC5jb20iLCJleHAiOjE5MTk4NjMzNDR9.10SgML6irdg17gPjFoD-xj2_cMQPf0hZMz2eI30rNEI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cpf\": \"11111111112\",\r\n\"nome\": \"Marcelo Kimura\",\r\n\"nascimento\": \"03/02/1977\",\r\n\"cep\": \"04216002\",\r\n\"numero\": 879,\r\n\"complemento\": \"complemento\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remover Usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJjZWxvaGtpbXVyYUBnbWFpbC5jb20iLCJleHAiOjE5MTk4NjMzNDR9.10SgML6irdg17gPjFoD-xj2_cMQPf0hZMz2eI30rNEI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cpf\": \"11111111112\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Usuario",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJjZWxvaGtpbXVyYUBnbWFpbC5jb20iLCJleHAiOjE5MTk4NjMzNDR9.10SgML6irdg17gPjFoD-xj2_cMQPf0hZMz2eI30rNEI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cpf\": \"11111111112\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
