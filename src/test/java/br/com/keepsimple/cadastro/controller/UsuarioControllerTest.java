@@ -1,30 +1,35 @@
 package br.com.keepsimple.cadastro.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import br.com.keepsimple.cadastro.model.Status;
 import br.com.keepsimple.cadastro.service.UsuarioService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UsuarioControllerTest {
 
     @Autowired
@@ -36,6 +41,7 @@ public class UsuarioControllerTest {
     private String login = "marcelohkimura@gmail.com";
     private String password = "123456";
     private String cepBaseCorreto = "04216002";
+    private String cepBaseIncorreto = "04216003";
     private String cpfBase1 = "11111111111";
     private String cpfBase2 = "22222222222";    
     
@@ -47,8 +53,7 @@ public class UsuarioControllerTest {
     }    
     
     @Test
-    @Order(1)
-    public void criacaoEndpointComSucesso() throws Exception {
+    public void A_criacaoEndpointComSucesso() throws Exception {
     	this.criarEndereco();
     	String usuarioString = "{\"cpf\": \"" + cpfBase1 + "\",\"nome\": \"Fulano\",\"nascimento\": \"20/12/2023\",\"cep\": \"" + cepBaseCorreto + "\",\"numero\": 879, \"complemento\": \"apto 62\"}";
     	
@@ -62,8 +67,7 @@ public class UsuarioControllerTest {
     }
     
     @Test
-    @Order(2)
-    public void criacaoEndpointCpfJaExiste() throws Exception {
+    public void B_criacaoEndpointCpfJaExiste() throws Exception {
     	String usuarioString = "{\"cpf\": \"" + cpfBase1 + "\",\"nome\": \"Fulano\",\"nascimento\": \"20/12/2023\",\"cep\": \"" + cepBaseCorreto + "\",\"numero\": 879, \"complemento\": \"apto 62\"}";
     	
     	ResultActions result 
@@ -78,8 +82,7 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    @Order(3)
-    public void criacaoEndpointCpfFaltaDados() throws Exception {
+    public void C_criacaoEndpointCpfFaltaDados() throws Exception {
     	String usuarioString = "{\"cpf\": \"" + cpfBase2 + "\",\"nascimento\": \"20/12/2023\",\"cep\": \"" + cepBaseCorreto + "\",\"numero\": 879, \"complemento\": \"apto 62\"}";
     	
     	ResultActions result 
@@ -93,14 +96,13 @@ public class UsuarioControllerTest {
     }     
     
     @Test
-    @Order(4)
-    public void consultaEndpointCpfCorreto() throws Exception {
-    	String cepString = "{\"cpf\":\"" + cpfBase1 + "\"}";
+    public void D_consultaEndpointCpfCorreto() throws Exception {
+    	String usuarioString = "{\"cpf\":\"" + cpfBase1 + "\"}";
     	
     	ResultActions result 
         = mockMvc.perform(get("/usuario")
         		.header("authorization", "Bearer " + token)
-        		.content(cepString) 
+        		.content(usuarioString) 
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         
@@ -111,19 +113,86 @@ public class UsuarioControllerTest {
     }
     
     @Test
-    @Order(5)
-    public void consultaEndpointCpfIncorreto() throws Exception {
-    	String cepString = "{\"cpf\":\"" + cpfBase2 + "\"}";
+    public void E_consultaEndpointCpfIncorreto() throws Exception {
+    	String usuarioString = "{\"cpf\":\"" + cpfBase2 + "\"}";
     	
     	ResultActions result 
         = mockMvc.perform(get("/usuario")
         		.header("authorization", "Bearer " + token)
-        		.content(cepString) 
+        		.content(usuarioString) 
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     	
     	assert(result.andReturn().getResponse().getContentAsString().equals("Usuário não encontrado"));    	
     }    
+    
+    @Test
+    public void F_alteracaoEndpointComSucesso() throws Exception {
+    	String usuarioString = "{\"cpf\": \"" + cpfBase1 + "\",\"nome\": \"Fulano\",\"nascimento\": \"20/12/2023\",\"cep\": \"" + cepBaseCorreto + "\",\"numero\": 879, \"complemento\": \"apto 62\"}";
+    	
+        mockMvc.perform(put("/usuario")
+        		.header("authorization", "Bearer " + token)
+        		.content(usuarioString) 
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        
+        assert(usuarioService.loadUsuarioByCpf(cpfBase1).getCpf().equals(cpfBase1));        
+    }
+    
+    @Test
+    public void G_alteracaoEndpointCepNaoExiste() throws Exception {
+    	String usuarioString = "{\"cpf\": \"" + cpfBase2 + "\",\"nome\": \"Fulano\",\"nascimento\": \"20/12/2023\",\"cep\": \"" + cepBaseIncorreto + "\",\"numero\": 879, \"complemento\": \"apto 62\"}";
+    	
+    	ResultActions result 
+        = mockMvc.perform(put("/usuario")
+        		.header("authorization", "Bearer " + token)
+        		.content(usuarioString) 
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        
+        assert(result.andReturn().getResponse().getContentAsString().equals("CEP não encontrado"));        
+    }    
+    
+    @Test
+    public void H_alteracaoEndpointCpfNaoExiste() throws Exception {
+    	String usuarioString = "{\"cpf\": \"" + cpfBase2 + "\",\"nome\": \"Fulano\",\"nascimento\": \"20/12/2023\",\"cep\": \"" + cepBaseCorreto + "\",\"numero\": 879, \"complemento\": \"apto 62\"}";
+    	
+    	ResultActions result 
+        = mockMvc.perform(put("/usuario")
+        		.header("authorization", "Bearer " + token)
+        		.content(usuarioString) 
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        
+        assert(result.andReturn().getResponse().getContentAsString().equals("Usuário não cadastrado"));        
+    }
+    
+    @Test
+    public void I_removerEndpointComSucesso() throws Exception {
+    	String usuarioString = "{\"cpf\":\"" + cpfBase1 + "\"}";
+    	
+        mockMvc.perform(delete("/usuario")
+        		.header("authorization", "Bearer " + token)
+        		.content(usuarioString) 
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        
+        assert(usuarioService.loadUsuarioByCpf(cpfBase1).getStatus().equals(Status.R));        
+    }
+    
+    @Test
+    public void J_removerEndpointCpfNaoExiste() throws Exception {
+    	String usuarioString = "{\"cpf\":\"" + cpfBase2 + "\"}";
+    	
+    	ResultActions result 
+        = mockMvc.perform(delete("/usuario")
+        		.header("authorization", "Bearer " + token)
+        		.content(usuarioString) 
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        
+        assert(result.andReturn().getResponse().getContentAsString().equals("Usuário não cadastrado"));        
+    }
     
     private String obterToken(String login, String password) throws Exception {
     	 

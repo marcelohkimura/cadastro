@@ -79,7 +79,10 @@ public class UsuarioController {
 			String mensagemErro = e.getMessage();
 			if (e instanceof UsuarioInexistenteException) {
 				mensagemErro = "Usuário não cadastrado";
-			}			
+			}
+			else if (e instanceof CepInexistenteException) {
+				mensagemErro = "CEP não encontrado";
+			}
 			else if (e instanceof ParseException) {
 				mensagemErro = "Data de Nascimento inválida";
 			}

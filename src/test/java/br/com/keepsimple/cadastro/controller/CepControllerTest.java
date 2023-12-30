@@ -6,13 +6,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,6 +26,7 @@ import br.com.keepsimple.cadastro.service.CepService;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CepControllerTest {
 
     @Autowired
@@ -46,8 +48,7 @@ public class CepControllerTest {
     }
     
     @Test
-    @Order(1)
-    public void criacaoEndpointComSucesso() throws Exception {
+    public void A_criacaoEndpointComSucesso() throws Exception {
     	String cepString = "{\"cep\": \"" + cepBase1 + "\",\"bairro\": \"Ipiranga\",\"rua\": \"Mil Oitocentos e Vinte e Dois\",\"cidade\": \"Sao Paulo\",\"uf\": \"SP\"}";
     	
         mockMvc.perform(post("/cep")
@@ -60,8 +61,7 @@ public class CepControllerTest {
     }    
     
     @Test
-    @Order(2)
-    public void criacaoEndpointCepJaExiste() throws Exception {
+    public void B_criacaoEndpointCepJaExiste() throws Exception {
     	String cepString = "{\"cep\": \"" + cepBase1 + "\",\"bairro\": \"Ipiranga\",\"rua\": \"Mil Oitocentos e Vinte e Dois\",\"cidade\": \"Sao Paulo\",\"uf\": \"SP\"}";
     	
     	ResultActions result 
@@ -75,8 +75,7 @@ public class CepControllerTest {
     }
     
     @Test
-    @Order(3)
-    public void criacaoEndpointCepFaltaDados() throws Exception {
+    public void C_criacaoEndpointCepFaltaDados() throws Exception {
     	String cepString = "{\"cep\": \"" + cepBase2 + "\",\"rua\": \"Mil Oitocentos e Vinte e Dois\",\"cidade\": \"Sao Paulo\",\"uf\": \"SP\"}";
     	
     	ResultActions result 
@@ -90,8 +89,7 @@ public class CepControllerTest {
     }     
     
     @Test
-    @Order(4)
-    public void consultaEndpointCepCorreto() throws Exception {
+    public void D_consultaEndpointCepCorreto() throws Exception {
     	String cepString = "{\"cep\":\"" + cepBase1 + "\"}";
     	
     	ResultActions result 
@@ -108,8 +106,7 @@ public class CepControllerTest {
     }
     
     @Test
-    @Order(5)
-    public void consultaEndpointCepIncorreto() throws Exception {
+    public void E_consultaEndpointCepIncorreto() throws Exception {
     	String cepString = "{\"cep\":\"" + cepBase2 + "\"}";
     	
     	ResultActions result 
