@@ -1,4 +1,3 @@
-
 _Projeto de cadastro de usuários_.
 
 Projeto backend de cadastro de usuários com as seguintes operações:
