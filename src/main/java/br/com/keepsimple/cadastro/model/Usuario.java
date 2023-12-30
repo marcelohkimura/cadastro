@@ -1,6 +1,7 @@
 package br.com.keepsimple.cadastro.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -158,6 +159,29 @@ public class Usuario {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(atualizacao, cpf, criacao, endereco, id, loginAtualizacao, loginCriacao, loginRemocao,
+				nascimento, nome, remocao, status);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(atualizacao, other.atualizacao) && Objects.equals(cpf, other.cpf)
+				&& Objects.equals(criacao, other.criacao) && Objects.equals(endereco, other.endereco)
+				&& Objects.equals(id, other.id) && Objects.equals(loginAtualizacao, other.loginAtualizacao)
+				&& Objects.equals(loginCriacao, other.loginCriacao) && Objects.equals(loginRemocao, other.loginRemocao)
+				&& Objects.equals(nascimento, other.nascimento) && Objects.equals(nome, other.nome)
+				&& Objects.equals(remocao, other.remocao) && status == other.status;
 	}
    
 }

@@ -1,5 +1,7 @@
 package br.com.keepsimple.cadastro.model;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -57,6 +59,24 @@ public class Endereco {
 
 	public void setCep(Cep cep) {
 		this.cep = cep;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(cep, complemento, id, numero);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Endereco other = (Endereco) obj;
+		return Objects.equals(cep, other.cep) && Objects.equals(complemento, other.complemento)
+				&& Objects.equals(id, other.id) && Objects.equals(numero, other.numero);
 	}
     
 }

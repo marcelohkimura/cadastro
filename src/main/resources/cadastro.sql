@@ -24,7 +24,7 @@ create table cep
   UNIQUE(cep)
 );
 
-INSERT INTO cep(cep, rua, bairro, cidade, uf) VALUES ("04216001", 'Rua Mil Oitocentos e Vinte e Dois', 'Ipiranga', 'São Paulo', 'SP');
+INSERT INTO cep(cep, rua, bairro, cidade, uf) VALUES ('04216001', 'Rua Mil Oitocentos e Vinte e Dois', 'Ipiranga', 'São Paulo', 'SP');
 
 create table endereco
 (
@@ -33,7 +33,7 @@ create table endereco
 	numero INTEGER not null,
 	complemento VARCHAR(128),
 	PRIMARY KEY (id),
-	FOREIGN KEY FK_KEY_CEP (id_cep) REFERENCES cep(id)
+	FOREIGN KEY (id_cep) REFERENCES cep(id)
 );
 
 create table usuario
@@ -52,10 +52,10 @@ create table usuario
     data_remocao DATE,    
     PRIMARY KEY (id),
     UNIQUE(cpf),
-	FOREIGN KEY FK_KEY_ENDERECO (id_endereco) REFERENCES endereco(id),    
-	FOREIGN KEY FK_KEY_CRIACAO (id_login_criacao) REFERENCES login(id),
-	FOREIGN KEY FK_KEY_ATUALIZACAO (id_login_atualizacao) REFERENCES login(id),
-	FOREIGN KEY FK_KEY_REMOCAO (id_login_remocao) REFERENCES login(id)
+	FOREIGN KEY (id_endereco) REFERENCES endereco(id),    
+	FOREIGN KEY (id_login_criacao) REFERENCES login(id),
+	FOREIGN KEY (id_login_atualizacao) REFERENCES login(id),
+	FOREIGN KEY (id_login_remocao) REFERENCES login(id)
 );
 
 

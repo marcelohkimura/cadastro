@@ -1,0 +1,66 @@
+package br.com.keepsimple.cadastro.service;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import br.com.keepsimple.cadastro.model.Cep;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application-integrationtest.properties")
+public class CepServiceTest {
+	
+	@Autowired
+	private CepService cepService;
+	
+	@Test
+	public void testSalvarCepCorreto() throws Exception {
+		Cep cep = criarCepCompleto(); 
+		cep = this.cepService.salvarCep(cep);
+		assertNotNull(cep.getId());
+	}
+	
+	@Test(expected = DataIntegrityViolationException.class)
+	public void testSalvarCepIncorreto() throws Exception {
+		Cep cep = criarCepIncompleto(); 
+		cep = this.cepService.salvarCep(cep);
+		assertNull(cep.getId());
+	}	
+	
+	@Test
+	public void testLoadCep() throws Exception {
+		this.cepService.salvarCep(criarCepCompleto());
+		Cep novoCep = this.cepService.loadCepByCodigo("04216001");
+		assertNotNull(novoCep);
+	}
+	
+	private Cep criarCepCompleto() {
+		Cep novoCep = new Cep();
+		novoCep.setCep("04216001");
+		novoCep.setRua("Rua Mil Oitocentos e Vinte e Dois");		
+		novoCep.setBairro("Ipiranga");
+		novoCep.setCidade("São Paulo");
+		novoCep.setUf("SP");
+
+		return novoCep;
+	}
+	
+	private Cep criarCepIncompleto() {
+		Cep novoCep = new Cep();
+		novoCep.setCep("04216001");
+		novoCep.setBairro("Ipiranga");
+		novoCep.setCidade("São Paulo");
+		novoCep.setUf("SP");
+
+		return novoCep;
+	}	
+	
+}

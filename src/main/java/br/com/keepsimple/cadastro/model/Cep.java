@@ -97,4 +97,22 @@ public class Cep {
 		this.enderecos = enderecos;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(bairro, cep, cidade, enderecos, id, rua, uf);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cep other = (Cep) obj;
+		return Objects.equals(bairro, other.bairro) && Objects.equals(cep, other.cep)
+				&& Objects.equals(cidade, other.cidade) && Objects.equals(enderecos, other.enderecos)
+				&& Objects.equals(id, other.id) && Objects.equals(rua, other.rua) && Objects.equals(uf, other.uf);
+	}	
 }

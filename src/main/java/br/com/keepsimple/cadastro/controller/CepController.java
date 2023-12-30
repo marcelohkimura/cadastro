@@ -43,10 +43,10 @@ public class CepController {
 		} catch (Exception e) {
 			String mensagemErro = e.getMessage();
 			if (e instanceof DataIntegrityViolationException) {
-				if(e.getMessage().contains("Duplicate")) {
-					mensagemErro = "CEP já existente";
-				} else if (e.getMessage().contains("not-null")) {
+				if (e.getMessage().contains("not-null")) {
 					mensagemErro = "Campo obrigatório não preenchido";
+				} else {
+					mensagemErro = "CEP já existente";
 				}
 			}
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagemErro);

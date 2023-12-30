@@ -51,17 +51,23 @@ public class Login {
         this.email = email;
         this.password = password;
     }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Login user = (Login) o;
-        return Objects.equals(email, user.email);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(email);
-    }    
+	@Override
+	public int hashCode() {
+		return Objects.hash(email, id, password);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Login other = (Login) obj;
+		return Objects.equals(email, other.email) && Objects.equals(id, other.id)
+				&& Objects.equals(password, other.password);
+	}
+   
 }
