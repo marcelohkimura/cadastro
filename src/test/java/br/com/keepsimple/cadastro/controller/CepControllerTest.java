@@ -35,8 +35,8 @@ public class CepControllerTest {
     @Autowired
     private CepService cepService;
     
-    private String cepBase1 = "04216001";
-    private String cepBase2 = "04216002";
+    private String cepBaseOk = "04216001";
+    private String cepBaseNok = "04216003";
     private String login = "marcelohkimura@gmail.com";
     private String password = "123456";
     
@@ -49,7 +49,7 @@ public class CepControllerTest {
     
     @Test
     public void A_criacaoEndpointComSucesso() throws Exception {
-    	String cepString = "{\"cep\": \"" + cepBase1 + "\",\"bairro\": \"Ipiranga\",\"rua\": \"Mil Oitocentos e Vinte e Dois\",\"cidade\": \"Sao Paulo\",\"uf\": \"SP\"}";
+    	String cepString = "{\"cep\": \"" + cepBaseOk + "\",\"bairro\": \"Ipiranga\",\"rua\": \"Mil Oitocentos e Vinte e Dois\",\"cidade\": \"Sao Paulo\",\"uf\": \"SP\"}";
     	
         mockMvc.perform(post("/cep")
         		.header("authorization", "Bearer " + token)
@@ -57,12 +57,12 @@ public class CepControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         
-        assert(cepService.loadCepByCodigo(cepBase1).getCep().equals(cepBase1));        
+        assert(cepService.loadCepByCodigo(cepBaseOk).getCep().equals(cepBaseOk));        
     }    
     
     @Test
     public void B_criacaoEndpointCepJaExiste() throws Exception {
-    	String cepString = "{\"cep\": \"" + cepBase1 + "\",\"bairro\": \"Ipiranga\",\"rua\": \"Mil Oitocentos e Vinte e Dois\",\"cidade\": \"Sao Paulo\",\"uf\": \"SP\"}";
+    	String cepString = "{\"cep\": \"" + cepBaseOk + "\",\"bairro\": \"Ipiranga\",\"rua\": \"Mil Oitocentos e Vinte e Dois\",\"cidade\": \"Sao Paulo\",\"uf\": \"SP\"}";
     	
     	ResultActions result 
         = mockMvc.perform(post("/cep")
@@ -76,7 +76,7 @@ public class CepControllerTest {
     
     @Test
     public void C_criacaoEndpointCepFaltaDados() throws Exception {
-    	String cepString = "{\"cep\": \"" + cepBase2 + "\",\"rua\": \"Mil Oitocentos e Vinte e Dois\",\"cidade\": \"Sao Paulo\",\"uf\": \"SP\"}";
+    	String cepString = "{\"cep\": \"" + cepBaseNok + "\",\"rua\": \"Mil Oitocentos e Vinte e Dois\",\"cidade\": \"Sao Paulo\",\"uf\": \"SP\"}";
     	
     	ResultActions result 
         = mockMvc.perform(post("/cep")
@@ -90,7 +90,7 @@ public class CepControllerTest {
     
     @Test
     public void D_consultaEndpointCepCorreto() throws Exception {
-    	String cepString = "{\"cep\":\"" + cepBase1 + "\"}";
+    	String cepString = "{\"cep\":\"" + cepBaseOk + "\"}";
     	
     	ResultActions result 
         = mockMvc.perform(get("/cep")
@@ -102,12 +102,12 @@ public class CepControllerTest {
         String resultString = result.andReturn().getResponse().getContentAsString();
 
         JacksonJsonParser jsonParser = new JacksonJsonParser();
-        assert(jsonParser.parseMap(resultString).get("cep").toString().equals(cepBase1));        
+        assert(jsonParser.parseMap(resultString).get("cep").toString().equals(cepBaseOk));        
     }
     
     @Test
     public void E_consultaEndpointCepIncorreto() throws Exception {
-    	String cepString = "{\"cep\":\"" + cepBase2 + "\"}";
+    	String cepString = "{\"cep\":\"" + cepBaseNok + "\"}";
     	
     	ResultActions result 
         = mockMvc.perform(get("/cep")
