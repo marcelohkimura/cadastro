@@ -1,4 +1,4 @@
-FROM openjdk:11-jdk-slim
+FROM openjdk:17-jdk-slim
 VOLUME /tmp
 ADD app/target/cadastro-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
